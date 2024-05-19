@@ -15,7 +15,7 @@ func main() {
 	flag.Parse()
 
 	if *startTimeStr == "" || *endTimeStr == "" || *logFilePath == "" {
-		fmt.Println("Usage: go run main.go -start=\"MM/DD/YYYY HH:MM:SS\" -end=\"MM/DD/YYYY HH:MM:SS\" -file=\"path/to/logfile.log\"")
+		fmt.Println("Usage: ./cut -start=\"MM/DD/YYYY HH:MM:SS\" -end=\"MM/DD/YYYY HH:MM:SS\" -file=\"path/to/logfile.log\"")
 		return
 	}
 
@@ -49,4 +49,3 @@ func main() {
 		fmt.Println("Error reading file:", err)
 	}
 }
-
