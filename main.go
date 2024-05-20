@@ -6,17 +6,19 @@ import (
 	"fmt"
 	"os"
 	"runtime"
+	"sort"
 	"strings"
 	"sync"
 )
 
 const (
-	numThreads = 60
+	numThreads = 4
 	bufferSize = 20 * 1024 * 1024 // 20MB
 )
 
 type logEntry struct {
-	line string
+	index int
+	line  string
 }
 
 func main() {
@@ -66,7 +68,16 @@ func main() {
 		close(linesChannel)
 	}()
 
+	var results []logEntry
 	for entry := range linesChannel {
+		results = append(results, entry)
+	}
+
+	sort.Slice(results, func(i, j int) bool {
+		return results[i].index < results[j].index
+	})
+
+	for _, entry := range results {
 		fmt.Print(entry.line)
 	}
 }
@@ -86,6 +97,7 @@ func processChunk(filePath string, id int, chunkSize int64, startTime, endTime s
 
 	var buffer strings.Builder
 	var capture bool
+	index := int(start)
 
 	for {
 		pos, _ := file.Seek(0, 1)
@@ -108,9 +120,10 @@ func processChunk(filePath string, id int, chunkSize int64, startTime, endTime s
 			capture = false
 			break
 		}
+		index++
 	}
 
 	if buffer.Len() > 0 {
-		linesChannel <- logEntry{line: buffer.String()}
+		linesChannel <- logEntry{index: id, line: buffer.String()}
 	}
 }
