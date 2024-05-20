@@ -22,9 +22,9 @@ type logEntry struct {
 func main() {
 	runtime.GOMAXPROCS(runtime.NumCPU())
 
-	startTimeStr := flag.String("start", "", "开始时间，格式为 MM/DD/YYYY HH:MM:SS")
-	endTimeStr := flag.String("end", "", "结束时间，格式为 MM/DD/YYYY HH:MM:SS")
-	logFilePath := flag.String("file", "", "日志文件的路径")
+	startTimeStr := flag.String("start", "", "Start time in format MM/DD/YYYY HH:MM:SS")
+	endTimeStr := flag.String("end", "", "End time in format MM/DD/YYYY HH:MM:SS")
+	logFilePath := flag.String("file", "", "Path to the log file")
 	flag.Parse()
 
 	if *startTimeStr == "" || *endTimeStr == "" || *logFilePath == "" {
